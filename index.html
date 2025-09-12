@@ -4,56 +4,75 @@
 <head>
     <meta charset="UTF-8">
     <title>Calculadora de Média - UNIP</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+
         body {
             font-family: 'Rubik', sans-serif;
-            background-color: #fff8dc;
+            background-color: #FFD700;
             margin: 0;
             padding: 0;
             text-align: center;
         }
+
         .container {
-            padding: 40px;
+            padding: 20px;
         }
+
         .hidden {
             display: none;
         }
+
         h1 {
             color: #003366;
-            font-size: 36px;
-            margin-bottom: 10px;
+            font-size: 2em;
+            transition: transform 0.3s ease;
         }
-        p {
-            font-size: 20px;
-            color: #333;
+
+        h1:hover {
+            transform: scale(1.05);
         }
+
         button {
             padding: 12px 24px;
-            margin: 20px;
-            background-color: #ffcc00;
+            margin: 10px;
+            background-color: #003366;
             border: none;
-            border-radius: 8px;
-            color: #003366;
+            color: #FFD700;
             font-weight: bold;
-            font-size: 16px;
             cursor: pointer;
+            border-radius: 8px;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
+
         button:hover {
-            background-color: #ffd633;
+            background-color: #002244;
+            transform: scale(1.05);
         }
+
         input {
             padding: 10px;
             margin: 10px;
-            width: 100px;
+            width: 80%;
+            max-width: 200px;
+            border: 2px solid #003366;
+            border-radius: 6px;
+            transition: border-color 0.3s ease, transform 0.2s ease;
         }
+
+        input:hover {
+            border-color: #002244;
+            transform: scale(1.03);
+        }
+
         .result {
             font-size: 18px;
             margin-top: 20px;
             color: #003366;
         }
+
         .confetti {
             position: fixed;
             top: 0;
@@ -63,9 +82,25 @@
             pointer-events: none;
             z-index: 9999;
         }
+
         .emoji {
-            font-size: 60px;
-            margin-bottom: 20px;
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            input {
+                width: 90%;
+            }
+
+            button {
+                width: 90%;
+                font-size: 1em;
+            }
         }
     </style>
 </head>
@@ -173,7 +208,4 @@
     </script>
 </body>
 </html>
-
-
-
 

@@ -5,222 +5,56 @@ html_code = """
     <meta charset="UTF-8">
     <title>Calculadora de Média - UNIP</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #fff8dc;
+            font-family: 'Rubik', sans-serif;
+            background-color: #fffbe6;
             margin: 0;
             padding: 0;
             text-align: center;
         }
         .container {
-            padding: 20px;
-        }
-        .hidden {
-            display: none;
+            padding: 40px 20px;
         }
         h1 {
             color: #003366;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.2em;
+            color: #333;
         }
         button {
-            padding: 10px 20px;
-            margin: 10px;
+            padding: 12px 24px;
+            margin-top: 20px;
             background-color: #ffcc00;
             border: none;
             border-radius: 8px;
             color: #003366;
             font-weight: bold;
+            font-size: 1em;
             cursor: pointer;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease;
         }
         button:hover {
             background-color: #ffd633;
         }
-        input {
-            padding: 10px;
-            margin: 10px;
-            width: 100px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        .result {
-            font-size: 18px;
-            margin-top: 20px;
-            color: #003366;
-        }
-        .confetti {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-        }
-        .bonecos {
-            display: flex;
-            justify-content: center;
-            gap: 50px;
-            margin: 20px;
-        }
-        .boneco {
-            width: 100px;
-            height: 200px;
-            position: relative;
-        }
-        .cabeca {
-            width: 60px;
-            height: 60px;
-            background: #8b5a2b;
-            border-radius: 50%;
-            margin: 0 auto;
-        }
-        .corpo {
-            width: 60px;
-            height: 100px;
-            background: #ffcc00;
-            margin: 10px auto;
-            border-radius: 10px;
-            border: 2px solid #003366;
-        }
-        .cabelo-social {
-            width: 60px;
-            height: 20px;
-            background: #3b2f2f;
-            border-radius: 10px 10px 0 0;
-            position: absolute;
-            top: 0;
-            left: 20px;
-        }
-        .cabelo-cacheado {
-            width: 60px;
-            height: 30px;
-            background: radial-gradient(circle at 10px 10px, #000 10%, transparent 11%),
-                        radial-gradient(circle at 30px 10px, #000 10%, transparent 11%),
-                        radial-gradient(circle at 50px 10px, #000 10%, transparent 11%);
-            background-size: 20px 20px;
-            background-repeat: no-repeat;
-            position: absolute;
-            top: 0;
-            left: 20px;
+        .emoji {
+            font-size: 4em;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <div id="inicio" class="container">
+    <div class="container">
+        <div class="emoji">📚</div>
         <h1>Olá alunos!</h1>
         <p>Clique abaixo para calcular sua média</p>
-        <button onclick="mostrarCalculadora()">IR</button>
+        <button onclick="alert('Aqui entraria a navegação para a calculadora')">IR</button>
     </div>
-
-    <div id="calculadora" class="container hidden">
-        <h1>Calculadora de Média - UNIP</h1>
-        <div class="bonecos">
-            <div class="boneco">
-                <div class="cabelo-social"></div>
-                <div class="cabeca"></div>
-                <div class="corpo"></div>
-                <div style="text-align:center; color:#003366;">Homem Mulato</div>
-            </div>
-            <div class="boneco">
-                <div class="cabelo-cacheado"></div>
-                <div class="cabeca"></div>
-                <div class="corpo"></div>
-                <div style="text-align:center; color:#003366;">Mulher Mulata</div>
-            </div>
-        </div>
-        <input type="number" id="prova" placeholder="Nota Prova" min="0" max="10">
-        <input type="number" id="ava" placeholder="Nota AVA" min="0" max="10">
-        <br>
-        <button onclick="calcularMedia()">Calcular</button>
-        <button onclick="limparCampos()">Limpar</button>
-        <button onclick="voltarInicio()">Voltar</button>
-        <div class="result" id="resultado"></div>
-        <canvas class="confetti hidden" id="confettiCanvas"></canvas>
-    </div>
-
-    <script>
-        function mostrarCalculadora() {
-            document.getElementById('inicio').classList.add('hidden');
-            document.getElementById('calculadora').classList.remove('hidden');
-        }
-
-        function voltarInicio() {
-            document.getElementById('calculadora').classList.add('hidden');
-            document.getElementById('inicio').classList.remove('hidden');
-            limparCampos();
-        }
-
-        function limparCampos() {
-            document.getElementById('prova').value = '';
-            document.getElementById('ava').value = '';
-            document.getElementById('resultado').innerHTML = '';
-        }
-
-        function calcularMedia() {
-            const prova = parseFloat(document.getElementById('prova').value);
-            const ava = parseFloat(document.getElementById('ava').value);
-            if (isNaN(prova) || isNaN(ava)) {
-                alert("Por favor, insira as duas notas.");
-                return;
-            }
-
-            const md = (9 * prova + ava) / 10;
-            let resultado = `Média: ${md.toFixed(2)}<br>`;
-
-            if (md >= 7) {
-                resultado += "✅ Aprovado!";
-                document.getElementById('resultado').innerHTML = resultado;
-                iniciarConfete();
-            } else {
-                const notaExame = (14 - md).toFixed(2);
-                resultado += "⚠️ Deverá realizar exame.<br>";
-                resultado += `Nota mínima no exame para aprovação: ${notaExame}`;
-                document.getElementById('resultado').innerHTML = resultado;
-            }
-        }
-
-        function iniciarConfete() {
-            const canvas = document.getElementById('confettiCanvas');
-            canvas.classList.remove('hidden');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const confetes = [];
-            for (let i = 0; i < 100; i++) {
-                confetes.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    r: Math.random() * 6 + 4,
-                    d: Math.random() * 10 + 5,
-                    color: `hsl(${Math.random() * 360}, 100%, 50%)`
-                });
-            }
-
-            function desenharConfete() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                for (let i = 0; i < confetes.length; i++) {
-                    const c = confetes[i];
-                    ctx.beginPath();
-                    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2, false);
-                    ctx.fillStyle = c.color;
-                    ctx.fill();
-                    c.y += c.d;
-                    if (c.y > canvas.height) {
-                        c.y = -10;
-                        c.x = Math.random() * canvas.width;
-                    }
-                }
-                requestAnimationFrame(desenharConfete);
-            }
-
-            desenharConfete();
-            setTimeout(() => {
-                canvas.classList.add('hidden');
-            }, 5000);
-        }
-    </script>
 </body>
 </html>
 """
@@ -228,5 +62,5 @@ html_code = """
 with open("index.html", "w", encoding="utf-8") as f:
     f.write(html_code)
 
-print("Arquivo index.html gerado com bonecos estilizados em CSS e layout aprimorado.")
+print("Arquivo index.html atualizado com sucesso.")
 

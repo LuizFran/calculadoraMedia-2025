@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Calculadora de Média - UNIP</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
-            background-color: #fff8dc;
+            background-color: #FFFF00;
             margin: 0;
             padding: 0;
             text-align: center;
@@ -21,62 +21,64 @@
         }
         h1 {
             color: #003366;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s;
         }
         h1:hover {
             transform: scale(1.05);
         }
         h2 {
             color: #003366;
-            font-size: 20px;
-            margin-bottom: 20px;
-            transition: color 0.3s ease;
+            font-weight: normal;
+            margin-top: -10px;
+            transition: transform 0.3s;
         }
         h2:hover {
-            color: #0055aa;
+            transform: scale(1.05);
         }
-        p {
-            font-size: 18px;
-            transition: color 0.3s ease;
-        }
-        p:hover {
-            color: #0055aa;
+        p:hover, .result:hover {
+            transform: scale(1.02);
         }
         button {
-            padding: 10px 20px;
+            padding: 12px 24px;
             margin: 10px;
-            background-color: #003366;
+            background-color: #ffcc00;
             border: none;
-            color: white;
+            color: #003366;
             font-weight: bold;
             cursor: pointer;
-            border-radius: 8px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            border-radius: 6px;
+            transition: background-color 0.3s, transform 0.3s;
         }
         button:hover {
-            background-color: #0055aa;
+            background-color: #ffd633;
             transform: scale(1.05);
+        }
+        #btn-ir {
+            background-color: #003366;
+            color: white;
+        }
+        #btn-ir:hover {
+            background-color: #0055aa;
         }
         input {
             padding: 10px;
             margin: 10px;
             width: 100px;
+            font-size: 16px;
             border-radius: 5px;
             border: 1px solid #ccc;
-            transition: border-color 0.3s ease, transform 0.3s ease;
+            transition: border-color 0.3s, transform 0.3s;
         }
-        input:hover {
+        input:hover, input:focus {
             border-color: #003366;
-            transform: scale(1.05);
+            transform: scale(1.03);
+            outline: none;
         }
         .result {
             font-size: 18px;
             margin-top: 20px;
             color: #003366;
-            transition: color 0.3s ease;
-        }
-        .result:hover {
-            color: #0055aa;
+            transition: transform 0.3s;
         }
         @media (max-width: 600px) {
             input {
@@ -93,13 +95,13 @@
         <h1>📚 Olá alunos!</h1>
         <h2>Bacharelado - Graduação</h2>
         <p>Clique abaixo para calcular sua média</p>
-        <button onclick="mostrarCalculadora()">IR</button>
+        <button id="btn-ir" onclick="mostrarCalculadora()">IR</button>
     </div>
 
     <div id="calculadora" class="container hidden">
         <h1>Calculadora de Média - UNIP</h1>
-        <input type="number" id="prova" placeholder="Nota Prova" min="0" max="10">
-        <input type="number" id="ava" placeholder="Nota AVA" min="0" max="10">
+        <input type="number" id="prova" placeholder="Nota Prova" min="0" max="10" step="0.01">
+        <input type="number" id="ava" placeholder="Nota AVA" min="0" max="10" step="0.01">
         <br>
         <button onclick="calcularMedia()">Calcular</button>
         <button onclick="limparCampos()">Limpar</button>
@@ -140,10 +142,10 @@
                 resultado += "✅ Aprovado!";
             } else {
                 const notaExame = (14 - md).toFixed(2);
-                const mediaFinal = ((md + parseFloat(notaExame)) / 2).toFixed(2);
+                const mediaFinal = (md + parseFloat(notaExame)) / 2;
                 resultado += "⚠️ Deverá realizar exame.<br>";
                 resultado += `Nota mínima no exame para aprovação: ${notaExame}<br>`;
-                resultado += `Média final aproximada após exame: ${mediaFinal}`;
+                resultado += `Média final aproximada após exame: ${mediaFinal.toFixed(2)}`;
             }
 
             document.getElementById('resultado').innerHTML = resultado;

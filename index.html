@@ -4,62 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Calculadora de Média - UNIP</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS para cores vivas e layout moderno -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: 'Rubik', sans-serif;
-            margin: 0;
-            padding: 0;
+            background-color: #fff8dc;
+            font-family: 'Segoe UI', sans-serif;
             text-align: center;
-            background: linear-gradient(135deg, #f9d423, #ff4e50);
-            color: #003366;
-        }
-        .container {
             padding: 20px;
         }
-        .hidden {
-            display: none;
-        }
         h1, h2, p {
-            transition: transform 0.3s ease, color 0.3s ease;
+            transition: transform 0.3s ease;
         }
         h1:hover, h2:hover, p:hover {
             transform: scale(1.05);
-            color: #002244;
-        }
-        button {
-            padding: 10px 20px;
-            margin: 10px;
-            background-color: #ffcc00;
-            border: none;
-            color: #003366;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 8px;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-            transition: background-color 0.3s ease, transform 0.3s ease;
         }
         button:hover {
-            background-color: #ffe066;
             transform: scale(1.05);
+        }
+        input:hover {
+            transform: scale(1.03);
         }
         input {
-            padding: 10px;
-            margin: 10px;
-            width: 100px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            transition: border-color 0.3s ease, transform 0.3s ease;
+            font-size: 16px;
         }
-        input:focus, input:hover {
-            border-color: #003366;
-            transform: scale(1.05);
+        .container {
+            max-width: 500px;
+            margin: auto;
         }
         .result {
             font-size: 18px;
             margin-top: 20px;
         }
-        canvas.confetti {
+        .confetti {
             position: fixed;
             top: 0;
             left: 0;
@@ -68,45 +46,37 @@
             pointer-events: none;
             z-index: 9999;
         }
-        @media (max-width: 600px) {
-            input {
-                width: 80%;
-            }
-            button {
-                width: 80%;
-            }
-        }
     </style>
 </head>
 <body>
     <div id="inicio" class="container">
-        <h1>📚 Olá alunos!</h1>
-        <h2>Bacharelado - Graduação</h2>
-        <p>Clique abaixo para calcular sua média</p>
-        <button onclick="mostrarCalculadora()">IR</button>
+        <h1 class="text-primary">📚 Olá alunos!</h1>
+        <h2 class="text-warning">Bacharelado - Graduação</h2>
+        <p class="text-secondary">Clique abaixo para calcular sua média</p>
+        <button class="btn btn-warning" onclick="mostrarCalculadora()">IR</button>
     </div>
 
-    <div id="calculadora" class="container hidden">
-        <h1>Calculadora de Média - UNIP</h1>
-        <input type="number" id="prova" placeholder="Nota Prova" min="0" max="10">
-        <input type="number" id="ava" placeholder="Nota AVA" min="0" max="10">
+    <div id="calculadora" class="container d-none">
+        <h1 class="text-primary">Calculadora de Média - UNIP</h1>
+        <input type="number" id="prova" class="form-control my-2" placeholder="Nota Prova" min="0" max="10">
+        <input type="number" id="ava" class="form-control my-2" placeholder="Nota AVA" min="0" max="10">
         <br>
-        <button onclick="calcularMedia()">Calcular</button>
-        <button onclick="limparCampos()">Limpar</button>
-        <button onclick="voltarInicio()">Voltar</button>
-        <div class="result" id="resultado"></div>
-        <canvas class="confetti hidden" id="confettiCanvas"></canvas>
+        <button class="btn btn-success" onclick="calcularMedia()">Calcular</button>
+        <button class="btn btn-secondary" onclick="limparCampos()">Limpar</button>
+        <button class="btn btn-danger" onclick="voltarInicio()">Voltar</button>
+        <div class="result text-dark" id="resultado"></div>
+        <canvas class="confetti d-none" id="confettiCanvas"></canvas>
     </div>
 
     <script>
         function mostrarCalculadora() {
-            document.getElementById('inicio').classList.add('hidden');
-            document.getElementById('calculadora').classList.remove('hidden');
+            document.getElementById('inicio').classList.add('d-none');
+            document.getElementById('calculadora').classList.remove('d-none');
         }
 
         function voltarInicio() {
-            document.getElementById('calculadora').classList.add('hidden');
-            document.getElementById('inicio').classList.remove('hidden');
+            document.getElementById('calculadora').classList.add('d-none');
+            document.getElementById('inicio').classList.remove('d-none');
             limparCampos();
         }
 
@@ -132,18 +102,18 @@
                 document.getElementById('resultado').innerHTML = resultado;
                 iniciarConfete();
             } else {
-                const notaExame = (14 - md).toFixed(2);
-                const mf = (md + parseFloat(notaExame)) / 2;
+                const notaExameMinima = (14 - md).toFixed(2);
+                const mediaFinalAproximada = ((md + parseFloat(notaExameMinima)) / 2).toFixed(2);
                 resultado += "⚠️ Deverá realizar exame.<br>";
-                resultado += `Nota mínima no exame para aprovação: ${notaExame}<br>`;
-                resultado += `Média final aproximada após exame: ${mf.toFixed(2)}`;
+                resultado += `Nota mínima no exame para aprovação: ${notaExameMinima}<br>`;
+                resultado += `Média final aproximada após exame: ${mediaFinalAproximada}`;
                 document.getElementById('resultado').innerHTML = resultado;
             }
         }
 
         function iniciarConfete() {
             const canvas = document.getElementById('confettiCanvas');
-            canvas.classList.remove('hidden');
+            canvas.classList.remove('d-none');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -178,7 +148,7 @@
 
             desenharConfete();
             setTimeout(() => {
-                canvas.classList.add('hidden');
+                canvas.classList.add('d-none');
             }, 5000);
         }
     </script>

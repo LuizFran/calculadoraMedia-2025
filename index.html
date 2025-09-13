@@ -4,76 +4,62 @@
 <head>
     <meta charset="UTF-8">
     <title>Calculadora de Média - UNIP</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
-
         body {
             font-family: 'Rubik', sans-serif;
-            background-color: #FFD700;
             margin: 0;
             padding: 0;
             text-align: center;
+            background: linear-gradient(135deg, #f9d423, #ff4e50);
+            color: #003366;
         }
-
         .container {
             padding: 20px;
         }
-
         .hidden {
             display: none;
         }
-
-        h1 {
-            color: #003366;
-            font-size: 2em;
-            transition: transform 0.3s ease;
+        h1, h2, p {
+            transition: transform 0.3s ease, color 0.3s ease;
         }
-
-        h1:hover {
+        h1:hover, h2:hover, p:hover {
             transform: scale(1.05);
+            color: #002244;
         }
-
         button {
-            padding: 12px 24px;
+            padding: 10px 20px;
             margin: 10px;
-            background-color: #003366;
+            background-color: #ffcc00;
             border: none;
-            color: #FFD700;
+            color: #003366;
             font-weight: bold;
             cursor: pointer;
             border-radius: 8px;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
-
         button:hover {
-            background-color: #002244;
+            background-color: #ffe066;
             transform: scale(1.05);
         }
-
         input {
             padding: 10px;
             margin: 10px;
-            width: 80%;
-            max-width: 200px;
-            border: 2px solid #003366;
-            border-radius: 6px;
-            transition: border-color 0.3s ease, transform 0.2s ease;
+            width: 100px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            transition: border-color 0.3s ease, transform 0.3s ease;
         }
-
-        input:hover {
-            border-color: #002244;
-            transform: scale(1.03);
+        input:focus, input:hover {
+            border-color: #003366;
+            transform: scale(1.05);
         }
-
         .result {
             font-size: 18px;
             margin-top: 20px;
-            color: #003366;
         }
-
-        .confetti {
+        canvas.confetti {
             position: fixed;
             top: 0;
             left: 0;
@@ -82,32 +68,20 @@
             pointer-events: none;
             z-index: 9999;
         }
-
-        .emoji {
-            font-size: 3em;
-            margin-bottom: 10px;
-        }
-
         @media (max-width: 600px) {
-            h1 {
-                font-size: 1.5em;
-            }
-
             input {
-                width: 90%;
+                width: 80%;
             }
-
             button {
-                width: 90%;
-                font-size: 1em;
+                width: 80%;
             }
         }
     </style>
 </head>
 <body>
     <div id="inicio" class="container">
-        <div class="emoji">📚</div>
-        <h1>Olá alunos!</h1>
+        <h1>📚 Olá alunos!</h1>
+        <h2>Bacharelado - Graduação</h2>
         <p>Clique abaixo para calcular sua média</p>
         <button onclick="mostrarCalculadora()">IR</button>
     </div>
@@ -159,8 +133,10 @@
                 iniciarConfete();
             } else {
                 const notaExame = (14 - md).toFixed(2);
+                const mf = (md + parseFloat(notaExame)) / 2;
                 resultado += "⚠️ Deverá realizar exame.<br>";
-                resultado += `Nota mínima no exame para aprovação: ${notaExame}`;
+                resultado += `Nota mínima no exame para aprovação: ${notaExame}<br>`;
+                resultado += `Média final aproximada após exame: ${mf.toFixed(2)}`;
                 document.getElementById('resultado').innerHTML = resultado;
             }
         }
@@ -208,4 +184,5 @@
     </script>
 </body>
 </html>
+
 

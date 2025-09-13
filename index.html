@@ -3,21 +3,15 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Calculadora de Média - UNIP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <style>
         body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: Arial, sans-serif;
             background-color: #ecab0f;
-            color: #003366;
+            margin: 0;
+            padding: 0;
             text-align: center;
-        }
-        h1, h2, p {
-            transition: transform 0.3s ease;
-        }
-        h1:hover, h2:hover, p:hover {
-            transform: scale(1.05);
         }
         .container {
             padding: 20px;
@@ -25,79 +19,69 @@
         .hidden {
             display: none;
         }
+        h1, h2, p {
+            color: #003366;
+            transition: transform 0.3s ease;
+        }
+        h1:hover, h2:hover, p:hover {
+            transform: scale(1.05);
+        }
         button {
             padding: 10px 20px;
             margin: 10px;
             border: none;
-            border-radius: 8px;
+            color: white;
             font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            border-radius: 5px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
         button:hover {
             transform: scale(1.05);
+            opacity: 0.9;
+        }
+        .btn-azul {
+            background-color: #003366;
+        }
+        .btn-vermelho {
+            background-color: #cc0000;
         }
         input {
             padding: 10px;
             margin: 10px;
             width: 100px;
-            border-radius: 6px;
+            border-radius: 5px;
             border: 1px solid #003366;
-            transition: border-color 0.3s ease, transform 0.3s ease;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
         input:hover {
-            border-color: #000;
             transform: scale(1.05);
+            border-color: #000;
         }
         .result {
             font-size: 18px;
             margin-top: 20px;
-        }
-        .confetti {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-        }
-        .btn-azul {
-            background-color: #003366;
-            color: white;
-        }
-        .btn-vermelho {
-            background-color: #cc0000;
-            color: white;
-        }
-        @media (max-width: 600px) {
-            input {
-                width: 80%;
-            }
-            button {
-                width: 80%;
-            }
+            color: #003366;
         }
     </style>
 </head>
 <body>
     <div id="inicio" class="container">
         <h1>📚 Olá alunos!</h1>
-        <h2 style="color:#003366;">Bacharelado - Licenciatura</h2>
+        <h2>Bacharelado - Licenciatura</h2>
         <p>Clique abaixo para calcular sua média</p>
         <button class="btn-azul" onclick="mostrarCalculadora()">IR</button>
     </div>
 
     <div id="calculadora" class="container hidden">
         <h1>Calculadora de Média - UNIP</h1>
-        <input type="number" id="np1" placeholder="Nota NP1" min="0" max="10">
-        <input type="number" id="exame" placeholder="Nota Exame" min="0" max="10">
+        <input type="number" id="prova1" placeholder="Nota Prova 1" min="0" max="10">
+        <input type="number" id="ava" placeholder="Nota AVA" min="0" max="10">
         <br>
         <button class="btn-azul" onclick="calcularMedia()">Calcular</button>
         <button class="btn-vermelho" onclick="limparCampos()">Limpar</button>
         <button class="btn-azul" onclick="voltarInicio()">Voltar</button>
         <div class="result" id="resultado"></div>
-        <canvas class="confetti hidden" id="confettiCanvas"></canvas>
     </div>
 
     <script>
@@ -113,20 +97,20 @@
         }
 
         function limparCampos() {
-            document.getElementById('np1').value = '';
-            document.getElementById('exame').value = '';
+            document.getElementById('prova1').value = '';
+            document.getElementById('ava').value = '';
             document.getElementById('resultado').innerHTML = '';
         }
 
         function calcularMedia() {
-            const np1 = parseFloat(document.getElementById('np1').value);
-            const exame = parseFloat(document.getElementById('exame').value);
-            if (isNaN(np1) || isNaN(exame)) {
+            const prova1 = parseFloat(document.getElementById('prova1').value);
+            const ava = parseFloat(document.getElementById('ava').value);
+            if (isNaN(prova1) || isNaN(ava)) {
                 alert("Por favor, insira as duas notas.");
                 return;
             }
 
-            const md = (np1 * 4 + exame * 4) / 10;
+            const md = prova1 + ava;
             let resultado = `Média Final: ${md.toFixed(2)}<br>`;
 
             if (md >= 7) {
@@ -134,24 +118,28 @@
                 document.getElementById('resultado').innerHTML = resultado;
                 iniciarConfete();
             } else {
-                const notaMinima = ((7 * 10) - (np1 * 4)) / 4;
-                resultado += "⚠️ Reprovado.<br>";
-                resultado += `Nota mínima no exame para aprovação: ${notaMinima.toFixed(2)}<br>`;
-                const mediaFinal = (np1 * 4 + notaMinima * 4) / 10;
-                resultado += `Média final aproximada com essa nota: ${mediaFinal.toFixed(2)}`;
+                resultado += "❌ REPROVADO, PRECISARÁ FAZER EXAME";
                 document.getElementById('resultado').innerHTML = resultado;
             }
         }
 
         function iniciarConfete() {
-            const canvas = document.getElementById('confettiCanvas');
-            canvas.classList.remove('hidden');
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.pointerEvents = 'none';
+            canvas.style.zIndex = '9999';
+            document.body.appendChild(canvas);
+
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
 
             const confetes = [];
-            for (let i = 0; i < 150; i++) {
+            for (let i = 0; i < 100; i++) {
                 confetes.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
@@ -180,7 +168,7 @@
 
             desenharConfete();
             setTimeout(() => {
-                canvas.classList.add('hidden');
+                document.body.removeChild(canvas);
             }, 10000);
         }
     </script>

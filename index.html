@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Calculadora de Média - UNIP</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <style>
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #FFFF00;
+            font-family: Arial, sans-serif;
+            background-color: #ecab0f;
             margin: 0;
             padding: 0;
             text-align: center;
@@ -19,80 +19,76 @@
         .hidden {
             display: none;
         }
+        h1, h2, p, .result {
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        h1:hover, h2:hover, p:hover, .result:hover {
+            transform: scale(1.05);
+            color: #003366;
+        }
         h1 {
             color: #003366;
-            transition: transform 0.3s;
-        }
-        h1:hover {
-            transform: scale(1.05);
         }
         h2 {
             color: #003366;
-            font-weight: normal;
-            margin-top: -10px;
-            transition: transform 0.3s;
-        }
-        h2:hover {
-            transform: scale(1.05);
-        }
-        p:hover, .result:hover {
-            transform: scale(1.02);
         }
         button {
-            padding: 12px 24px;
+            padding: 10px 20px;
             margin: 10px;
-            background-color: #ffcc00;
             border: none;
-            color: #003366;
+            color: white;
             font-weight: bold;
             cursor: pointer;
-            border-radius: 6px;
-            transition: background-color 0.3s, transform 0.3s;
+            border-radius: 5px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
         button:hover {
-            background-color: #ffd633;
             transform: scale(1.05);
+            opacity: 0.9;
         }
         #btn-ir {
             background-color: #003366;
-            color: white;
         }
-        #btn-ir:hover {
-            background-color: #0055aa;
+        #btn-calcular {
+            background-color: #003366;
+        }
+        #btn-limpar {
+            background-color: #cc0000;
+        }
+        #btn-voltar {
+            background-color: #003366;
         }
         input {
             padding: 10px;
             margin: 10px;
             width: 100px;
-            font-size: 16px;
             border-radius: 5px;
-            border: 1px solid #ccc;
-            transition: border-color 0.3s, transform 0.3s;
+            border: 1px solid #003366;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
-        input:hover, input:focus {
-            border-color: #003366;
-            transform: scale(1.03);
-            outline: none;
+        input:hover {
+            transform: scale(1.05);
+            border-color: #cc0000;
         }
         .result {
             font-size: 18px;
             margin-top: 20px;
             color: #003366;
-            transition: transform 0.3s;
         }
-        @media (max-width: 600px) {
-            input {
-                width: 80%;
-            }
-            button {
-                width: 80%;
-            }
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
         }
     </style>
 </head>
 <body>
     <div id="inicio" class="container">
-        <h1>📚 Olá alunos!</h1>
+        <h1>Olá alunos! 📚</h1>
         <h2>Bacharelado - Graduação</h2>
         <p>Clique abaixo para calcular sua média</p>
         <button id="btn-ir" onclick="mostrarCalculadora()">IR</button>
@@ -100,13 +96,14 @@
 
     <div id="calculadora" class="container hidden">
         <h1>Calculadora de Média - UNIP</h1>
-        <input type="number" id="prova" placeholder="Nota Prova" min="0" max="10" step="0.01">
-        <input type="number" id="ava" placeholder="Nota AVA" min="0" max="10" step="0.01">
+        <input type="number" id="prova" placeholder="Nota Prova" min="0" max="10">
+        <input type="number" id="ava" placeholder="Nota AVA" min="0" max="10">
         <br>
-        <button onclick="calcularMedia()">Calcular</button>
-        <button onclick="limparCampos()">Limpar</button>
-        <button onclick="voltarInicio()">Voltar</button>
+        <button id="btn-calcular" onclick="calcularMedia()">Calcular</button>
+        <button id="btn-limpar" onclick="limparCampos()">Limpar</button>
+        <button id="btn-voltar" onclick="voltarInicio()">Voltar</button>
         <div class="result" id="resultado"></div>
+        <canvas class="confetti hidden" id="confettiCanvas"></canvas>
     </div>
 
     <script>
@@ -140,15 +137,57 @@
 
             if (md >= 7) {
                 resultado += "✅ Aprovado!";
+                document.getElementById('resultado').innerHTML = resultado;
+                iniciarConfete();
             } else {
                 const notaExame = (14 - md).toFixed(2);
-                const mediaFinal = (md + parseFloat(notaExame)) / 2;
+                const mediaFinal = ((md + parseFloat(notaExame)) / 2).toFixed(2);
                 resultado += "⚠️ Deverá realizar exame.<br>";
                 resultado += `Nota mínima no exame para aprovação: ${notaExame}<br>`;
-                resultado += `Média final aproximada após exame: ${mediaFinal.toFixed(2)}`;
+                resultado += `Média final aproximada após exame: ${mediaFinal}`;
+                document.getElementById('resultado').innerHTML = resultado;
+            }
+        }
+
+        function iniciarConfete() {
+            const canvas = document.getElementById('confettiCanvas');
+            canvas.classList.remove('hidden');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const confetes = [];
+            for (let i = 0; i < 100; i++) {
+                confetes.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 6 + 4,
+                    d: Math.random() * 10 + 5,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`
+                });
             }
 
-            document.getElementById('resultado').innerHTML = resultado;
+            function desenharConfete() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < confetes.length; i++) {
+                    const c = confetes[i];
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2, false);
+                    ctx.fillStyle = c.color;
+                    ctx.fill();
+                    c.y += c.d;
+                    if (c.y > canvas.height) {
+                        c.y = -10;
+                        c.x = Math.random() * canvas.width;
+                    }
+                }
+                requestAnimationFrame(desenharConfete);
+            }
+
+            desenharConfete();
+            setTimeout(() => {
+                canvas.classList.add('hidden');
+            }, 10000);
         }
     </script>
 </body>
